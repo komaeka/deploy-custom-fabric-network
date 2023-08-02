@@ -1,8 +1,8 @@
-# Deploy custom fabric network(easy)
+# Deploy custom fabric network(advanced)
 
-* 该目录为部署一个简单版本的fabric网络实例，主要包含如下内容
-  * 单个排序节点
-  * 两个组织，每个组织一个peer节点，且该节点为锚节点
+* 该目录为部署一个进阶版本的fabric网络实例，主要包含如下内容
+  * 基于raft排序算法的三个排序节点
+  * 两个组织，每个组织两个peer节点，锚节点都为peer0
   * fabric sample中的测试链码
 
 ## 生成各个组织的证书文件
@@ -25,5 +25,3 @@
 
 ## 部署链码
 
-1. 进入scripts目录，运行deployChaincode.sh部署链码：`./deployChaincode.sh`
-2. 运行
