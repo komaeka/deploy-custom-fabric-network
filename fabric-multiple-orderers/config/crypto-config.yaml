@@ -1,0 +1,30 @@
+OrdererOrgs:
+    - Name: Orderer
+      Domain: example.com
+      #  EnableNodeOUs参数用于启用将身份分类为“客户端”或“对等节点”，可以在背书策略或通道配置中使用这些角色
+      EnableNodeOUs: true
+      Template:
+          Count: 3
+          SANS:
+              - localhost
+
+PeerOrgs:
+    - Name: Org1
+      Domain: org1.example.com
+      EnableNodeOUs: true
+      Template:
+          Count: 1
+          SANS:
+              - localhost
+      Users:
+          Count: 1
+
+    - Name: Org2
+      Domain: org2.example.com
+      EnableNodeOUs: true
+      Template:
+          Count: 1
+          SANS:
+              - localhost
+      Users:
+          Count: 1
