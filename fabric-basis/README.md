@@ -1,7 +1,7 @@
 # 部署自定义fabric网络（basis）
-* 该目录为部署一个简单版本的fabric网络实例，主要包含如下内容
+* 本工程将部署一个基础的fabric网络，主要包含如下内容
   * 单个排序节点
-  * 两个组织，每个组织一个peer节点，且该节点为锚节点
+  * 两个组织，每个组织包含一个peer节点，且该节点为锚节点
 
 > 以下所有脚本均需要在scirpts目录下运行
 
@@ -12,7 +12,7 @@
 * 运行startNetwork.sh启动网络：`./startNetwork.sh`
 
 ## 创建通道
-*运行createChannel.sh创建通道：`./createChannel.sh`
+* 运行createChannel.sh创建通道：`./createChannel.sh`
 
 ## 部署链码
 * 运行deployChaincode.sh部署链码：`./deployChaincode.sh`
