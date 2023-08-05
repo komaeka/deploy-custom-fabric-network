@@ -6,23 +6,25 @@
 ---
 ################################################################################
 #
-#   Orderer Configuration
+#   排序节点 配置
 #
-#   - This controls the type and configuration of the orderer.
+#   - 这部分控制排序节点的类型和配置
 #
 ################################################################################
 General:
-    # Listen address: The IP on which to bind to listen.
+    # 监听地址：绑定监听的IP地址
     ListenAddress: 127.0.0.1
 
-    # Listen port: The port on which to bind to listen.
+    # 监听端口：绑定监听的端口
     ListenPort: 7050
 
-    # TLS: TLS settings for the GRPC server.
+    # TLS: GRPC服务器的TLS设置。
     TLS:
         # Require server-side TLS
+        # 要求服务器端TLS
         Enabled: false
         # PrivateKey governs the file location of the private key of the TLS certificate.
+        #
         PrivateKey: tls/server.key
         # Certificate governs the file location of the server TLS certificate.
         Certificate: tls/server.crt

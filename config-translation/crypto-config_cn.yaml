@@ -1,22 +1,24 @@
 # ---------------------------------------------------------------------------
-# "OrdererOrgs" - Definition of organizations managing orderer nodes
+# "OrdererOrgs" - 管理排序节点组织的定义
 # ---------------------------------------------------------------------------
 OrdererOrgs:
     # ---------------------------------------------------------------------------
-    # Orderer
+    # 排序节点
     # ---------------------------------------------------------------------------
     - Name: Orderer
       Domain: example.com
+      #  EnableNodeOUs参数用于启用将身份分类为“客户端”或“对等节点”，可以在背书策略或通道配置中使用这些角色
+      #  将此项设置为true会在证书目录的msp目录下生成一个config.yaml
       EnableNodeOUs: false
 
       # ---------------------------------------------------------------------------
-      # "Specs" - See PeerOrgs below for complete description
+      # "Specs" - 完整说明见下文PeerOrgs
       # ---------------------------------------------------------------------------
       Specs:
           - Hostname: orderer
 
 # ---------------------------------------------------------------------------
-# "PeerOrgs" - Definition of organizations managing peer nodes
+# "PeerOrgs" - 管理对等节点组织的定义
 # ---------------------------------------------------------------------------
 PeerOrgs:
     # ---------------------------------------------------------------------------
@@ -29,8 +31,8 @@ PeerOrgs:
       # ---------------------------------------------------------------------------
       # "CA"
       # ---------------------------------------------------------------------------
-      # Uncomment this section to enable the explicit definition of the CA for this
-      # organization.  This entry is a Spec.  See "Specs" section below for details.
+      # 取消本节的注释以启用该组织CA的明确定义。此条目是一个规范。
+      # 请参阅下面的“Specs”部分了解详细信息
       # ---------------------------------------------------------------------------
       # CA:
       #    Hostname: ca # implicitly ca.org1.example.com
@@ -44,24 +46,18 @@ PeerOrgs:
       # ---------------------------------------------------------------------------
       # "Specs"
       # ---------------------------------------------------------------------------
-      # Uncomment this section to enable the explicit definition of hosts in your
-      # configuration.  Most users will want to use Template, below
+      # 取消注释以在配置中启用主机的显式定义。大多数用户会想要使用下面的模板
       #
-      # Specs is an array of Spec entries.  Each Spec entry consists of two fields:
-      #   - Hostname:   (Required) The desired hostname, sans the domain.
-      #   - CommonName: (Optional) Specifies the template or explicit override for
-      #                 the CN.  By default, this is the template:
+      # Specs是Spec条目的数组。每个规范条目由两个字段组成：
+      #   - Hostname:   (必须) 所需的主机名，不包括域名。
+      #   - CommonName: (可选) 指定CN的模板或显式覆盖。默认情况下，这是模板：
       #
       #                              "{{.Hostname}}.{{.Domain}}"
       #
-      #                 which obtains its values from the Spec.Hostname and
-      #                 Org.Domain, respectively.
-      #   - SANS:       (Optional) Specifies one or more Subject Alternative Names
-      #                 to be set in the resulting x509. Accepts template
-      #                 variables {{.Hostname}}, {{.Domain}}, {{.CommonName}}. IP
-      #                 addresses provided here will be properly recognized. Other
-      #                 values will be taken as DNS names.
-      #                 NOTE: Two implicit entries are created for you:
+      #   值分别来自Spec.Hostname和Org.Domain。
+      #   - SANS: (可选) 指定要在生成的x509中设置的一个或多个主题备选名称。接受模板变量{{.Hostname}}, {{.Domain}}, {{.CommonName}}
+      #                 此处提供的IP地址将被正确识别。其他值将作为DNS名称。
+      #   注意: 为您创建了两个隐式条目：
       #                     - {{ .CommonName }}
       #                     - {{ .Hostname }}
       # ---------------------------------------------------------------------------
@@ -79,14 +75,10 @@ PeerOrgs:
       # ---------------------------------------------------------------------------
       # "Template"
       # ---------------------------------------------------------------------------
-      # Allows for the definition of 1 or more hosts that are created sequentially
-      # from a template. By default, this looks like "peer%d" from 0 to Count-1.
-      # You may override the number of nodes (Count), the starting index (Start)
-      # or the template used to construct the name (Hostname).
+      # 允许定义从模板顺序创建的1个或多个主机。默认情况下，它看起来像从0到Count-1的“peer%d”。
+      # 您可以覆盖节点数(Count)、起始索引(Start)或用于构建名称的模板(Hostname)。
       #
-      # Note: Template and Specs are not mutually exclusive.  You may define both
-      # sections and the aggregate nodes will be created for you.  Take care with
-      # name collisions
+      # 注意: 模板和规格并不相互排斥。 您可以同时定义这两个部分，并为您创建集合节点。 注意名称冲突
       # ---------------------------------------------------------------------------
       Template:
           Count: 1
@@ -98,13 +90,13 @@ PeerOrgs:
       # ---------------------------------------------------------------------------
       # "Users"
       # ---------------------------------------------------------------------------
-      # Count: The number of user accounts _in addition_ to Admin
+      # Count: 除管理员外的用户账户数
       # ---------------------------------------------------------------------------
       Users:
           Count: 1
 
     # ---------------------------------------------------------------------------
-    # Org2: See "Org1" for full specification
+    # Org2: 参阅 "Org1 "了解完整规格
     # ---------------------------------------------------------------------------
     - Name: Org2
       Domain: org2.example.com
