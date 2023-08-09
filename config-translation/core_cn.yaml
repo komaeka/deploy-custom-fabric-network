@@ -9,8 +9,7 @@
 #
 ###############################################################################
 peer:
-    # The peer id provides a name for this peer instance and is used when
-    # naming docker resources.
+    # peer id为这个peer实例提供了一个名称，在命名docker资源时使用
     id: jdoe
 
     # The networkId allows for logical separation of networks and is used when

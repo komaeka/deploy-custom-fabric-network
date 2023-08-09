@@ -18,132 +18,106 @@ General:
     # 监听端口：绑定监听的端口
     ListenPort: 7050
 
-    # TLS: GRPC服务器的TLS设置。
+    # TLS: GRPC服务器的TLS设置
     TLS:
         # Require server-side TLS
         # 要求服务器端TLS
         Enabled: false
-        # PrivateKey governs the file location of the private key of the TLS certificate.
-        #
+        # PrivateKey管理TLS证书私钥的文件位置
         PrivateKey: tls/server.key
-        # Certificate governs the file location of the server TLS certificate.
+        # Certificate指定了服务器TLS证书的文件位置
         Certificate: tls/server.crt
-        # RootCAs contains a list of additional root certificates used for verifying certificates
-        # of other orderer nodes during outbound connections.
-        # It is not required to be set, but can be used to augment the set of TLS CA certificates
-        # available from the MSPs of each channel’s configuration.
+        # RootCAs包含一个附加根证书列表，用于在向外连接时验证其他orderer节点的证书
+        # 它不是必须设置的，但可用于增加每个通道配置的MSP可用的TLS CA证书集
         RootCAs:
             - tls/ca.crt
-        # Require client certificates / mutual TLS for inbound connections.
+        # 要求入站连接使用客户端证书/相互TLS
         ClientAuthRequired: false
-        # If mutual TLS is enabled, ClientRootCAs contains a list of additional root certificates
-        # used for verifying certificates of client connections.
-        # It is not required to be set, but can be used to augment the set of TLS CA certificates
-        # available from the MSPs of each channel’s configuration.
+        # 如果启用了相互TLS, ClientRootCAs包含一个额外的根证书列表，用于验证客户端连接的证书
+        # 它不是必须设置的，但可以用于扩充每个通道配置的MSPs中可用的TLS CA证书集
         ClientRootCAs:
-    # Keepalive settings for the GRPC server.
+    # GRPC服务器的Keepalive设置
     Keepalive:
-        # ServerMinInterval is the minimum permitted time between client pings.
-        # If clients send pings more frequently, the server will
-        # disconnect them.
+        # ServerMinInterval是两次客户端ping之间允许的最小时间
+        # 如果客户端发送的ping更频繁，服务器将断开连接
         ServerMinInterval: 60s
-        # ServerInterval is the time between pings to clients.
+        # ServerInterval是两次ping客户端的时间间隔
         ServerInterval: 7200s
-        # ServerTimeout is the duration the server waits for a response from
-        # a client before closing the connection.
+        # ServerTimeout是服务器在关闭连接之前等待客户端响应的时间
         ServerTimeout: 20s
 
-    # Since all nodes should be consistent it is recommended to keep
-    # the default value of 100MB for MaxRecvMsgSize & MaxSendMsgSize
-    # Max message size in bytes the GRPC server and client can receive
+    # 因为所有节点都应该是一致的，所以建议将MaxRecvMsgSize和MaxSendMsgSize的默认值设置为100MB
+    # 即GRPC服务器和客户端能够接收到的最大消息大小
     MaxRecvMsgSize: 104857600
-    # Max message size in bytes the GRPC server and client can send
+    # GRPC服务器和客户端可以发送的最大消息字节数
     MaxSendMsgSize: 104857600
 
-    # Cluster settings for ordering service nodes that communicate with other ordering service nodes
-    # such as Raft based ordering service.
+    # 与其他排序服务节点(如基于Raft的排序服务)通信的排序服务节点的集群设置
     Cluster:
-        # SendBufferSize is the maximum number of messages in the egress buffer.
-        # Consensus messages are dropped if the buffer is full, and transaction
-        # messages are waiting for space to be freed.
+        # SendBufferSize是出口缓冲区中消息的最大数量
+        # 如果缓冲区已满，并且事务消息正在等待空间释放，则删除共识消息
         SendBufferSize: 100
 
-        # ClientCertificate governs the file location of the client TLS certificate
-        # used to establish mutual TLS connections with other ordering service nodes.
-        # If not set, the server General.TLS.Certificate is re-used.
+        # ClientCertificate管理客户端TLS证书的文件位置，该证书用于与其他排序服务节点建立相互TLS连接
+        # 如果没有设置，则重复使用服务器的General.TLS.Certificate
         ClientCertificate:
-        # ClientPrivateKey governs the file location of the private key of the client TLS certificate.
-        # If not set, the server General.TLS.PrivateKey is re-used.
+        # ClientPrivateKey管理客户端TLS证书私钥的文件位置
+        # 如果没有设置，则重复使用服务器的General.TLS.PrivateKey
         ClientPrivateKey:
 
-        # The below 4 properties should be either set together, or be unset together.
-        # If they are set, then the orderer node uses a separate listener for intra-cluster
-        # communication. If they are unset, then the general orderer listener is used.
-        # This is useful if you want to use a different TLS server certificates on the
-        # client-facing and the intra-cluster listeners.
+        # 以下4个属性要么一起设置，要么一起取消设置
+        # 如果设置了它们，那么orderer节点将使用一个单独的监听器进行集群内通信，如果未设置，则使用通用排序器侦听器
+        # 如果你想在面向客户端的监听器和集群内的监听器上使用不同的TLS服务器证书，这很有用
 
-        # ListenPort defines the port on which the cluster listens to connections.
+        # ListenPort定义集群监听连接的端口
         ListenPort:
-        # ListenAddress defines the IP on which to listen to intra-cluster communication.
+        # ListenAddress定义监听集群内通信的IP地址
         ListenAddress:
-        # ServerCertificate defines the file location of the server TLS certificate used for intra-cluster
-        # communication.
+        # ServerCertificate定义了用于集群内通信的服务器TLS证书的文件位置
         ServerCertificate:
-        # ServerPrivateKey defines the file location of the private key of the TLS certificate.
+        # ServerPrivateKey定义了TLS证书私钥的文件位置
         ServerPrivateKey:
 
-    # Bootstrap method: The method by which to obtain the bootstrap block
-    # system channel is specified. The option can be one of:
-    #   "file" - path to a file containing the genesis block or config block of system channel
-    #   "none" - allows an orderer to start without a system channel configuration
+    # BootstrapMethod: 指定获取系统通道创世区块的方法。选项可以是:
+    #   "file" - 包含系统通道的创世块或配置块的文件路径
+    #   "none" - 允许排序服务在没有系统通道配置的情况下启动
     BootstrapMethod: none
 
-    # Bootstrap file: The file containing the bootstrap block to use when
-    # initializing the orderer system channel and BootstrapMethod is set to
-    # "file".  The bootstrap file can be the genesis block, and it can also be
-    # a config block for late bootstrap of some consensus methods like Raft.
-    # Generate a genesis block by updating $FABRIC_CFG_PATH/configtx.yaml and
-    # using configtxgen command with "-outputBlock" option.
-    # Defaults to file "genesisblock" (in $FABRIC_CFG_PATH directory) if not specified.
+    # Bootstrap file: 包含引导块的文件，在初始化orderer系统通道时使用，BootstrapMethod设置为"file"
+    # 引导文件可以是初始块，也可以是某些共识方法（如Raft）后期引导的配置区块
+    # 更新$FABRIC_CFG_PATH/configtx.yaml并使用带有"-outputBlock"选项的configtxgen命令生成创世块
+    # 如果未指定，默认为文件"genesisblock"（在$FABRIC_CFG_PATH目录中）
     BootstrapFile:
 
-    # LocalMSPDir is where to find the private crypto material needed by the
-    # orderer. It is set relative here as a default for dev environments but
-    # should be changed to the real location in production.
+    # LocalMSPDir是查找订购者所需的专用加密材料的位置
+    # 此处默认设置为开发环境中的相对位置，但在生产环境中应改为真实位置
     LocalMSPDir: msp
 
-    # LocalMSPID is the identity to register the local MSP material with the MSP
-    # manager. IMPORTANT: The local MSP ID of an orderer needs to match the MSP
-    # ID of one of the organizations defined in the orderer system channel's
-    # /Channel/Orderer configuration. The sample organization defined in the
-    # sample configuration provided has an MSP ID of "SampleOrg".
+    # LocalMSPID是向MSP管理器注册本地MSP材料的标识
+    # 重要提示：orderer的本地MSPID需要与orderer系统通道的/channel/orderer配置中定义的某个组织的MSPID匹配
+    # 在提供的示例配置中定义的示例组织具有“SampleOrg”的MSPID。
     LocalMSPID: SampleOrg
 
-    # Enable an HTTP service for Go "pprof" profiling as documented at:
+    # 启用Go“pprof”分析的HTTP服务，文档见:
     # https://golang.org/pkg/net/http/pprof
     Profile:
         Enabled: false
         Address: 0.0.0.0:6060
 
-    # BCCSP configures the blockchain crypto service providers.
+    # BCCSP配置区块链加密服务提供商。
     BCCSP:
-        # Default specifies the preferred blockchain crypto service provider
-        # to use. If the preferred provider is not available, the software
-        # based provider ("SW") will be used.
-        # Valid providers are:
-        #  - SW: a software based crypto provider
-        #  - PKCS11: a CA hardware security module crypto provider.
+        # 默认指定要使用的首选区块链加密服务提供商。如果首选提供商不可用，则将使用基于软件的提供商（"SW"）
+        # 有效的提供者是
+        #  - SW: 一个基于软件的加密提供商
+        #  - PKCS11: 一个CA硬件安全模块加密提供商
         Default: SW
 
-        # SW configures the software based blockchain crypto provider.
+        # SW对基于软件的区块链加密提供商进行配置
         SW:
-            # TODO: The default Hash and Security level needs refactoring to be
-            # fully configurable. Changing these defaults requires coordination
-            # SHA2 is hardcoded in several places, not only BCCSP
+            # TODO: 默认哈希值和安全级别需要重构才能完全配置，更改这些默认值需要协调多个地方的SHA2硬编码，而不仅仅是BCCSP
             Hash: SHA2
             Security: 256
-            # Location of key store. If this is unset, a location will be
-            # chosen using: 'LocalMSPDir'/keystore
+            # 钥匙仓库的位置。如果未设置，将使用LocalMSPDir/keystore选择位置
             FileKeyStore:
                 KeyStore:
 
@@ -160,79 +134,74 @@ General:
             FileKeyStore:
                 KeyStore:
 
-    # Authentication contains configuration parameters related to authenticating
-    # client messages
+    # Authentication包含与验证客户端消息相关的配置参数
     Authentication:
-        # the acceptable difference between the current server time and the
-        # client's time as specified in a client request message
+        # 客户端请求消息中指定的当前服务器时间和客户端时间之间可接受的差值
         TimeWindow: 15m
 
 ################################################################################
 #
 #   SECTION: File Ledger
 #
-#   - This section applies to the configuration of the file ledger.
+#   - 本节适用于账本文件的配置
 #
 ################################################################################
 FileLedger:
-    # Location: The directory to store the blocks in.
+    # Location: 存储区块的目录
     Location: /var/hyperledger/production/orderer
 
 ################################################################################
 #
 #   Debug Configuration
 #
-#   - This controls the debugging options for the orderer
+#   - 该选项控制排序服务服务的调试选项
 #
 ################################################################################
 Debug:
-    # BroadcastTraceDir when set will cause each request to the Broadcast service
-    # for this orderer to be written to a file in this directory
+    # 设置BroadcastTraceDir后，该排序节点向广播服务提出的每个请求都将被写入该目录中的文件
     BroadcastTraceDir:
 
-    # DeliverTraceDir when set will cause each request to the Deliver service
-    # for this orderer to be written to a file in this directory
+    # 设置DeliverTraceDir后，该订购者的交付服务的每个请求都会被写入该目录下的文件中
     DeliverTraceDir:
 
 ################################################################################
 #
 #   Operations Configuration
 #
-#   - This configures the operations server endpoint for the orderer
+#   - 为排序服务配置操作服务器端点
 #
 ################################################################################
 Operations:
-    # host and port for the operations server
+    # 操作服务器的主机和端口
     ListenAddress: 127.0.0.1:8443
 
-    # TLS configuration for the operations endpoint
+    # 操作节点的TLS配置
     TLS:
         # TLS enabled
         Enabled: false
 
-        # Certificate is the location of the PEM encoded TLS certificate
+        # Certificate是PEM编码的TLS证书的位置
         Certificate:
 
-        # PrivateKey points to the location of the PEM-encoded key
+        # PrivateKey指向pem编码的密钥的位置
         PrivateKey:
 
-        # Most operations service endpoints require client authentication when TLS
-        # is enabled. ClientAuthRequired requires client certificate authentication
-        # at the TLS layer to access all resources.
+        # 启用TLS时，大多数操作服务端点都需要客户端身份验证
+        # ClientAuthRequired访问所有资源需要在TLS层进行客户端证书验证
         ClientAuthRequired: false
 
-        # Paths to PEM encoded ca certificates to trust for client authentication
+        # PEM编码的ca证书路径用于客户端身份验证
         ClientRootCAs: []
 
 ################################################################################
 #
 #   Metrics Configuration
 #
-#   - This configures metrics collection for the orderer
+#   - 这将配置排序服务的度量指标收集功能
 #
 ################################################################################
 Metrics:
-    # The metrics provider is one of statsd, prometheus, or disabled
+    # 指标提供者可以是statsd、prometheus或disabled
     Provider: disabled
 
     # The statsd configuration
@@ -254,42 +223,38 @@ Metrics:
 #
 #   Admin Configuration
 #
-#   - This configures the admin server endpoint for the orderer
+#   - 这将为排序服务配置管理服务器端点
 #
 ################################################################################
 Admin:
-    # host and port for the admin server
+    # 管理服务器的主机和端口
     ListenAddress: 127.0.0.1:9443
 
-    # TLS configuration for the admin endpoint
+    # 管理端点的TLS配置
     TLS:
         # TLS enabled
         Enabled: false
 
-        # Certificate is the location of the PEM encoded TLS certificate
+        # Certificate是PEM编码的TLS证书的位置
         Certificate:
 
-        # PrivateKey points to the location of the PEM-encoded key
+        # PrivateKey指向pem编码的密钥的位置
         PrivateKey:
 
-        # Most admin service endpoints require client authentication when TLS
-        # is enabled. ClientAuthRequired requires client certificate authentication
-        # at the TLS layer to access all resources.
-        #
-        # NOTE: When TLS is enabled, the admin endpoint requires mutual TLS. The
-        # orderer will panic on startup if this value is set to false.
+        # 启用TLS时，大多数管理服务端点都需要客户端身份验证
+        # ClientAuthRequired要求在TLS层进行客户端证书验证，以访问所有资源
+        # NOTE: 启用TLS后，管理端点需要相互TLS。如果此值设置为false，则orderer在启动时将出现错误
         ClientAuthRequired: true
 
-        # Paths to PEM encoded ca certificates to trust for client authentication
+        # PEM编码的ca证书路径用于客户端身份验证
         ClientRootCAs: []
 
 ################################################################################
 #
 #   Channel participation API Configuration
 #
-#   - This provides the channel participation API configuration for the orderer.
-#   - Channel participation uses the ListenAddress and TLS settings of the Admin
-#     service.
+#   - 这将为排序服务提供通道参与API配置
+#   - 通道参与使用管理服务的ListenAddress和TLS设置
 #
 ################################################################################
 ChannelParticipation:
@@ -303,18 +268,14 @@ ChannelParticipation:
 #
 #   Consensus Configuration
 #
-#   - This section contains config options for a consensus plugin. It is opaque
-#     to orderer, and completely up to consensus implementation to make use of.
+#   - 本节包含共识插件的配置选项。它对排序服务是不透明的，完全取决于共识的实现来使用。
 #
 ################################################################################
 Consensus:
-    # The allowed key-value pairs here depend on consensus plugin. For etcd/raft,
-    # we use following options:
+    # 这里允许使用的键值对取决于consensus插件。对于etcd/raft，我们使用以下选项：
 
-    # WALDir specifies the location at which Write Ahead Logs for etcd/raft are
-    # stored. Each channel will have its own subdir named after channel ID.
+    # WALDir指定存储etcd/raft预写日志的位置。每个通道都有自己的子目录，以通道ID命名。
     WALDir: /var/hyperledger/production/orderer/etcdraft/wal
 
-    # SnapDir specifies the location at which snapshots for etcd/raft are
-    # stored. Each channel will have its own subdir named after channel ID.
+    # SnapDir指定存储etcd/raft快照的位置。每个通道都有自己的子目录，以通道ID命名。
     SnapDir: /var/hyperledger/production/orderer/etcdraft/snapshot

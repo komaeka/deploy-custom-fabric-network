@@ -7,8 +7,7 @@
 #
 #   NOTE
 #
-#   Since release V3.0 Solo, Kafka and the System Channel have been removed
-#   and are no longer supported.
+#   从版本V3.0 Solo开始，Kafka和System Channel已经被移除，不再受支持。
 #
 ################################################################################
 
@@ -17,8 +16,7 @@
 #
 #   ORGANIZATIONS
 #
-#   This section defines the organizational identities that can be referenced
-#   in the configuration profiles.
+#   本节定义了可以在配置描述文件中引用的组织标识
 #
 ################################################################################
 Organizations:
