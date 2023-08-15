@@ -9,7 +9,6 @@
 #
 ###############################################################################
 peer:
-
     # The peer id provides a name for this peer instance and is used when
     # naming docker resources.
     id: jdoe
@@ -60,7 +59,6 @@ peer:
         # to other network nodes.
         dialTimeout: 2m
 
-
     # Keepalive settings for peer server and clients
     keepalive:
         # Interval is the duration after which if the server does not see
@@ -93,7 +91,6 @@ peer:
             # ordering nodes before closing the connection
             timeout: 20s
 
-
     # Gossip related configuration
     gossip:
         # Bootstrap set to initialize gossip with.
@@ -113,14 +110,14 @@ peer:
         # "leader" selection, where leader is the peer to establish
         # connection with ordering service and use delivery protocol
         # to pull ledger blocks from ordering service.
-        useLeaderElection: false
+        useLeaderElection: true
         # Statically defines peer to be an organization "leader",
         # where this means that current peer will maintain connection
         # with ordering service and disseminate block across peers in
         # its own organization. Multiple peers or all peers in an organization
         # may be configured as org leaders, so that they all pull
         # blocks directly from ordering service.
-        orgLeader: true
+        orgLeader: false
 
         # Interval for membershipTracker polling
         membershipTrackerInterval: 5s
@@ -233,12 +230,12 @@ peer:
             # Note that it is applicable to all channels the peer has joined. The implication is that requiredPeerCount has to
             # be smaller than the number of peers in a channel that has the lowest numbers of peers from the organization.
             implicitCollectionDisseminationPolicy:
-               # requiredPeerCount defines the minimum number of eligible peers to which the peer must successfully
-               # disseminate private data for its own implicit collection during endorsement. Default value is 0.
-               requiredPeerCount: 0
-               # maxPeerCount defines the maximum number of eligible peers to which the peer will attempt to
-               # disseminate private data for its own implicit collection during endorsement. Default value is 1.
-               maxPeerCount: 1
+                # requiredPeerCount defines the minimum number of eligible peers to which the peer must successfully
+                # disseminate private data for its own implicit collection during endorsement. Default value is 0.
+                requiredPeerCount: 0
+                # maxPeerCount defines the maximum number of eligible peers to which the peer will attempt to
+                # disseminate private data for its own implicit collection during endorsement. Default value is 1.
+                maxPeerCount: 1
 
         # Gossip state transfer related configuration
         state:
@@ -273,7 +270,7 @@ peer:
     # TLS Settings
     tls:
         # Require server-side TLS
-        enabled:  false
+        enabled: false
         # Require client certificates / mutual TLS for inbound connections.
         # Note that clients that are not configured to use a certificate will
         # fail to connect to the peer.
@@ -296,7 +293,7 @@ peer:
         # Minimally, set your organization's TLS CA root certificate so that the peer can receive join channel requests.
         clientRootCAs:
             files:
-              - tls/ca.crt
+                - tls/ca.crt
         # Private key used for TLS when making client connections.
         # If not set, peer.tls.key.file will be used instead
         clientKey:
@@ -402,7 +399,7 @@ peer:
     # Used with Go profiling tools only in none production environment. In
     # production, it should be disabled (eg enabled: false)
     profile:
-        enabled:     false
+        enabled: false
         listenAddress: 0.0.0.0:6060
 
     # Handlers defines custom handlers that can filter and mutate
@@ -439,21 +436,18 @@ peer:
     #     library: /etc/hyperledger/fabric/plugin/escc.so
     handlers:
         authFilters:
-          -
-            name: DefaultAuth
-          -
-            name: ExpirationCheck    # This filter checks identity x509 certificate expiration
+            - name: DefaultAuth
+            - name: ExpirationCheck # This filter checks identity x509 certificate expiration
         decorators:
-          -
-            name: DefaultDecorator
+            - name: DefaultDecorator
         endorsers:
-          escc:
-            name: DefaultEndorsement
-            library:
+            escc:
+                name: DefaultEndorsement
+                library:
         validators:
-          vscc:
-            name: DefaultValidation
-            library:
+            vscc:
+                name: DefaultValidation
+                library:
 
     #    library: /etc/hyperledger/fabric/plugin/escc.so
     # Number of goroutines that will execute transaction validation in parallel.
@@ -506,7 +500,6 @@ peer:
 #
 ###############################################################################
 vm:
-
     # Endpoint of the vm management system.  For docker can be one of the following in general
     # unix:///var/run/docker.sock
     # http://localhost:2375
@@ -544,7 +537,7 @@ vm:
         hostConfig:
             NetworkMode: host
             Dns:
-               # - 192.168.0.1
+                # - 192.168.0.1
             LogConfig:
                 Type: json-file
                 Config:
@@ -558,7 +551,6 @@ vm:
 #
 ###############################################################################
 chaincode:
-
     # The id is used by the Chaincode stub to register the executing Chaincode
     # ID with the Peer and is generally supplied through ENV variables
     # the `path` form of ID is provided when installing the chaincode.
@@ -600,11 +592,10 @@ chaincode:
     # To override this property via env variable use CORE_CHAINCODE_EXTERNALBUILDERS: [{name: x, path: dir1}, {name: y, path: dir2}]
     # The path must be an absolute path.
     externalBuilders:
-       - name: ccaas_builder
-         path: /opt/hyperledger/ccaas_builder
-         propagateEnvironment:
-           - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
-
+        - name: ccaas_builder
+          path: /opt/hyperledger/ccaas_builder
+          propagateEnvironment:
+              - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
 
     # The maximum duration to wait for the chaincode build and install process
     # to complete.
@@ -645,12 +636,12 @@ chaincode:
 
     # Logging section for the chaincode container
     logging:
-      # Default level for all loggers within the chaincode container
-      level:  info
-      # Override default level for the 'shim' logger
-      shim:   warning
-      # Format for the chaincode container logs
-      format: '%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
+        # Default level for all loggers within the chaincode container
+        level: info
+        # Override default level for the 'shim' logger
+        shim: warning
+        # Format for the chaincode container logs
+        format: "%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}"
 
 ###############################################################################
 #
@@ -659,89 +650,88 @@ chaincode:
 #
 ###############################################################################
 ledger:
+    blockchain:
 
-  blockchain:
+    state:
+        # stateDatabase - options are "goleveldb", "CouchDB"
+        # goleveldb - default state database stored in goleveldb.
+        # CouchDB - store state database in CouchDB
+        stateDatabase: goleveldb
+        # Limit on the number of records to return per query
+        totalQueryLimit: 100000
+        couchDBConfig:
+            # It is recommended to run CouchDB on the same server as the peer, and
+            # not map the CouchDB container port to a server port in docker-compose.
+            # Otherwise proper security must be provided on the connection between
+            # CouchDB client (on the peer) and server.
+            couchDBAddress: 127.0.0.1:5984
+            # This username must have read and write authority on CouchDB
+            username:
+            # The password is recommended to pass as an environment variable
+            # during start up (eg CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD).
+            # If it is stored here, the file must be access control protected
+            # to prevent unintended users from discovering the password.
+            password:
+            # Number of retries for CouchDB errors
+            maxRetries: 3
+            # Number of retries for CouchDB errors during peer startup.
+            # The delay between retries doubles for each attempt.
+            # Default of 10 retries results in 11 attempts over 2 minutes.
+            maxRetriesOnStartup: 10
+            # CouchDB request timeout (unit: duration, e.g. 20s)
+            requestTimeout: 35s
+            # Limit on the number of records per each CouchDB query
+            # Note that chaincode queries are only bound by totalQueryLimit.
+            # Internally the chaincode may execute multiple CouchDB queries,
+            # each of size internalQueryLimit.
+            internalQueryLimit: 1000
+            # Limit on the number of records per CouchDB bulk update batch
+            maxBatchUpdateSize: 1000
+            # Create the _global_changes system database
+            # This is optional.  Creating the global changes database will require
+            # additional system resources to track changes and maintain the database
+            createGlobalChangesDB: false
+            # CacheSize denotes the maximum mega bytes (MB) to be allocated for the in-memory state
+            # cache. Note that CacheSize needs to be a multiple of 32 MB. If it is not a multiple
+            # of 32 MB, the peer would round the size to the next multiple of 32 MB.
+            # To disable the cache, 0 MB needs to be assigned to the cacheSize.
+            cacheSize: 64
 
-  state:
-    # stateDatabase - options are "goleveldb", "CouchDB"
-    # goleveldb - default state database stored in goleveldb.
-    # CouchDB - store state database in CouchDB
-    stateDatabase: goleveldb
-    # Limit on the number of records to return per query
-    totalQueryLimit: 100000
-    couchDBConfig:
-       # It is recommended to run CouchDB on the same server as the peer, and
-       # not map the CouchDB container port to a server port in docker-compose.
-       # Otherwise proper security must be provided on the connection between
-       # CouchDB client (on the peer) and server.
-       couchDBAddress: 127.0.0.1:5984
-       # This username must have read and write authority on CouchDB
-       username:
-       # The password is recommended to pass as an environment variable
-       # during start up (eg CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD).
-       # If it is stored here, the file must be access control protected
-       # to prevent unintended users from discovering the password.
-       password:
-       # Number of retries for CouchDB errors
-       maxRetries: 3
-       # Number of retries for CouchDB errors during peer startup.
-       # The delay between retries doubles for each attempt.
-       # Default of 10 retries results in 11 attempts over 2 minutes.
-       maxRetriesOnStartup: 10
-       # CouchDB request timeout (unit: duration, e.g. 20s)
-       requestTimeout: 35s
-       # Limit on the number of records per each CouchDB query
-       # Note that chaincode queries are only bound by totalQueryLimit.
-       # Internally the chaincode may execute multiple CouchDB queries,
-       # each of size internalQueryLimit.
-       internalQueryLimit: 1000
-       # Limit on the number of records per CouchDB bulk update batch
-       maxBatchUpdateSize: 1000
-       # Create the _global_changes system database
-       # This is optional.  Creating the global changes database will require
-       # additional system resources to track changes and maintain the database
-       createGlobalChangesDB: false
-       # CacheSize denotes the maximum mega bytes (MB) to be allocated for the in-memory state
-       # cache. Note that CacheSize needs to be a multiple of 32 MB. If it is not a multiple
-       # of 32 MB, the peer would round the size to the next multiple of 32 MB.
-       # To disable the cache, 0 MB needs to be assigned to the cacheSize.
-       cacheSize: 64
+    history:
+        # enableHistoryDatabase - options are true or false
+        # Indicates if the history of key updates should be stored.
+        # All history 'index' will be stored in goleveldb, regardless if using
+        # CouchDB or alternate database for the state.
+        enableHistoryDatabase: true
 
-  history:
-    # enableHistoryDatabase - options are true or false
-    # Indicates if the history of key updates should be stored.
-    # All history 'index' will be stored in goleveldb, regardless if using
-    # CouchDB or alternate database for the state.
-    enableHistoryDatabase: true
+    pvtdataStore:
+        # the maximum db batch size for converting
+        # the ineligible missing data entries to eligible missing data entries
+        collElgProcMaxDbBatchSize: 5000
+        # the minimum duration (in milliseconds) between writing
+        # two consecutive db batches for converting the ineligible missing data entries to eligible missing data entries
+        collElgProcDbBatchesInterval: 1000
+        # The missing data entries are classified into two categories:
+        # (1) prioritized
+        # (2) deprioritized
+        # Initially, all missing data are in the prioritized list. When the
+        # reconciler is unable to fetch the missing data from other peers,
+        # the unreconciled missing data would be moved to the deprioritized list.
+        # The reconciler would retry deprioritized missing data after every
+        # deprioritizedDataReconcilerInterval (unit: minutes). Note that the
+        # interval needs to be greater than the reconcileSleepInterval
+        deprioritizedDataReconcilerInterval: 60m
+        # The frequency to purge private data (in number of blocks).
+        # Private data is purged from the peer's private data store based on
+        # the collection property blockToLive or an explicit chaincode call to PurgePrivateData().
+        purgeInterval: 100
+        # Whether to log private data keys purged from private data store (INFO level) when explicitly purged via chaincode
+        purgedKeyAuditLogging: true
 
-  pvtdataStore:
-    # the maximum db batch size for converting
-    # the ineligible missing data entries to eligible missing data entries
-    collElgProcMaxDbBatchSize: 5000
-    # the minimum duration (in milliseconds) between writing
-    # two consecutive db batches for converting the ineligible missing data entries to eligible missing data entries
-    collElgProcDbBatchesInterval: 1000
-    # The missing data entries are classified into two categories:
-    # (1) prioritized
-    # (2) deprioritized
-    # Initially, all missing data are in the prioritized list. When the
-    # reconciler is unable to fetch the missing data from other peers,
-    # the unreconciled missing data would be moved to the deprioritized list.
-    # The reconciler would retry deprioritized missing data after every
-    # deprioritizedDataReconcilerInterval (unit: minutes). Note that the
-    # interval needs to be greater than the reconcileSleepInterval
-    deprioritizedDataReconcilerInterval: 60m
-    # The frequency to purge private data (in number of blocks).
-    # Private data is purged from the peer's private data store based on
-    # the collection property blockToLive or an explicit chaincode call to PurgePrivateData().
-    purgeInterval: 100
-    # Whether to log private data keys purged from private data store (INFO level) when explicitly purged via chaincode
-    purgedKeyAuditLogging: true
-
-  snapshots:
-    # Path on the file system where peer will store ledger snapshots
-    # The path must be an absolute path.
-    rootDir: /var/hyperledger/production/snapshots
+    snapshots:
+        # Path on the file system where peer will store ledger snapshots
+        # The path must be an absolute path.
+        rootDir: /var/hyperledger/production/snapshots
 
 ###############################################################################
 #

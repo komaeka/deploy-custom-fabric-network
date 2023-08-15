@@ -12,36 +12,28 @@ peer:
     # peer id为这个peer实例提供了一个名称，在命名docker资源时使用
     id: jdoe
 
-    # The networkId allows for logical separation of networks and is used when
-    # naming docker resources.
+    # 允许网络的逻辑分离，并在命名docker资源时使用
     networkId: dev
 
-    # The Address at local network interface this Peer will listen on.
-    # By default, it will listen on all network interfaces
+    # 该Peer将监听的本地网络接口地址。默认情况下，它将监听所有网络接口
     listenAddress: 0.0.0.0:7051
 
-    # The endpoint this peer uses to listen for inbound chaincode connections.
-    # If this is commented-out, the listen address is selected to be
-    # the peer's address (see below) with port 7052
+    # 该peer用于监听入站chaincode连接的端点。
+    # 如果未注释，则监听地址将选择为peer的地址（见下文），端口为7052
     # chaincodeListenAddress: 0.0.0.0:7052
 
-    # The endpoint the chaincode for this peer uses to connect to the peer.
-    # If this is not specified, the chaincodeListenAddress address is selected.
-    # And if chaincodeListenAddress is not specified, address is selected from
-    # peer address (see below). If specified peer address is invalid then it
-    # will fallback to the auto detected IP (local IP) regardless of the peer
-    # addressAutoDetect value.
+    # 该peer节点chaincode用来连接peer节点的端点。
+    # 如果没有指定，则选择chaincodeListenAddress地址。
+    # 如果没有指定chaincodeListenAddress，则address从peer address中选择(见下文)。
+    # 如果指定的peer地址无效，那么无论peer地址自动检测（peer addressAutoDetect）值如何，它都会退回到自动检测的IP（本地IP）。
     # chaincodeAddress: 0.0.0.0:7052
 
-    # When used as peer config, this represents the endpoint to other peers
-    # in the same organization. For peers in other organization, see
-    # gossip.externalEndpoint for more info.
-    # When used as CLI config, this means the peer's endpoint to interact with
+    # 当用作peer配置时，它表示与同一组织内其他peer的端点。
+    # 关于其他组织中的peer节点，请参阅gossip.externalEndpoint获取更多信息。
+    # 当作为 CLI 配置使用时，这意味着与peer端点交互的
     address: 0.0.0.0:7051
 
-    # Whether the Peer should programmatically determine its address
-    # This case is useful for docker containers.
-    # When set to true, will override peer address.
+    # Peer是否应该以编程方式确定其地址，这种情况对docker容器很有用。
     addressAutoDetect: false
 
     # Settings for the Peer's gateway server.
@@ -93,17 +85,12 @@ peer:
     # Gossip related configuration
     gossip:
         # Bootstrap set to initialize gossip with.
-        # This is a list of other peers that this peer reaches out to at startup.
-        # Important: The endpoints here have to be endpoints of peers in the same
-        # organization, because the peer would refuse connecting to these endpoints
-        # unless they are in the same organization as the peer.
+        # 这是该peer端点在启动时与之连接的其他peer端点的列表。
+        # Important: 这里的端点必须是同一组织中的peer节点的端点，因为除非这些端点与peer节点在同一组织中，否则peer节点将拒绝连接这些端点。
         bootstrap: 127.0.0.1:7051
 
-        # NOTE: orgLeader and useLeaderElection parameters are mutual exclusive.
-        # Setting both to true would result in the termination of the peer
-        # since this is undefined state. If the peers are configured with
-        # useLeaderElection=false, make sure there is at least 1 peer in the
-        # organization that its orgLeader is set to true.
+        # NOTE: orgLeader和useLeaderElection参数是互斥的。将这两个参数都设为true会导致peer终止，因为这是未定义的状态。
+        # 如果配置了useLeaderElection=false，请确保组织中至少有一个节点的orgLeader设置为true。
 
         # Defines whenever peer will initialize dynamic algorithm for
         # "leader" selection, where leader is the peer to establish
@@ -121,9 +108,7 @@ peer:
         # Interval for membershipTracker polling
         membershipTrackerInterval: 5s
 
-        # Overrides the endpoint that the peer publishes to peers
-        # in its organization. For peers in foreign organizations
-        # see 'externalEndpoint'
+        # 覆盖节点向其组织中的节点发布的端点。对于其他组织中的peer，请参阅 "externalEndpoint"。
         endpoint:
         # Maximum count of blocks stored in memory
         maxBlockCountToStore: 10
@@ -176,8 +161,8 @@ peer:
         maxConnectionAttempts: 120
         # Message expiration factor for alive messages
         msgExpirationFactor: 20
-        # This is an endpoint that is published to peers outside of the organization.
-        # If this isn't set, the peer will not be known to other organizations and will not be exposed via service discovery.
+        # 这是一个发布到组织外部的端点。
+        # 如果没有设置，其他组织就不会知道该peer节点，也不会通过服务发现来公开该peer节点。
         externalEndpoint:
         # Leader election service configuration
         election:
@@ -270,9 +255,8 @@ peer:
     tls:
         # Require server-side TLS
         enabled: false
-        # Require client certificates / mutual TLS for inbound connections.
-        # Note that clients that are not configured to use a certificate will
-        # fail to connect to the peer.
+        # 要求入站连接使用客户端证书/相互TLS。
+        # 请注意，未配置为使用证书的客户端将无法连接到peer。
         clientAuthRequired: false
         # X.509 certificate used for TLS server
         cert:
@@ -280,16 +264,13 @@ peer:
         # Private key used for TLS server
         key:
             file: tls/server.key
-        # rootcert.file represents the trusted root certificate chain used for verifying certificates
-        # of other nodes during outbound connections.
-        # It is not required to be set, but can be used to augment the set of TLS CA certificates
-        # available from the MSPs of each channel’s configuration.
+        # rootcert.file 表示受信任的根证书链，用于在向外连接时验证其他节点的证书。
+        # 它不是必须设置的，但可以用于扩充每个通道配置的MSPs中可用的TLS CA证书集。
         rootcert:
             file: tls/ca.crt
-        # If mutual TLS is enabled, clientRootCAs.files contains a list of additional root certificates
-        # used for verifying certificates of client connections.
-        # It augments the set of TLS CA certificates available from the MSPs of each channel’s configuration.
-        # Minimally, set your organization's TLS CA root certificate so that the peer can receive join channel requests.
+        # 如果启用了相互TLS，则clientRootCAs.Files包含一个额外的根证书列表，用于验证客户端连接的证书。
+        # 它扩充了每个通道配置的MSPs中可用的TLS CA证书集。
+        # 至少设置组织的TLS CA根证书，以便peer可以接收加入通道请求。
         clientRootCAs:
             files:
                 - tls/ca.crt
@@ -302,21 +283,17 @@ peer:
         clientCert:
             file:
 
-    # Authentication contains configuration parameters related to authenticating
-    # client messages
+    # Authentication 包含与验证客户端消息相关的配置参数
     authentication:
         # the acceptable difference between the current server time and the
         # client's time as specified in a client request message
         timewindow: 15m
 
-    # Path on the file system where peer will store data (eg ledger). This
-    # location must be access control protected to prevent unintended
-    # modification that might corrupt the peer operations.
-    # The path may be relative to FABRIC_CFG_PATH or an absolute path.
+    # 文件系统上peer存储数据的路径(如账本)。该位置必须受到访问控制的保护，以防止可能破坏对等操作的意外修改。
+    # 该路径可以是相对于FABRIC_CFG_PATH的，也可以是绝对路径。
     fileSystemPath: /var/hyperledger/production
 
-    # BCCSP (Blockchain crypto provider): Select which crypto implementation or
-    # library to use
+    # BCCSP (Blockchain crypto provider): 选择要使用的加密实现或加密库
     BCCSP:
         Default: SW
         # Settings for the SW crypto provider (i.e. when DEFAULT: SW)
@@ -345,17 +322,15 @@ peer:
             AltID:
             KeyIds:
 
-    # Path on the file system where peer will find MSP local configurations
-    # The path may be relative to FABRIC_CFG_PATH or an absolute path.
+    # 文件系统中存放MSP本地配置的路径
+    # 该路径可以是相对于FABRIC_CFG_PATH的，也可以是绝对路径。
     mspConfigPath: msp
 
     # Identifier of the local MSP
     # ----!!!!IMPORTANT!!!-!!!IMPORTANT!!!-!!!IMPORTANT!!!!----
-    # Deployers need to change the value of the localMspId string.
-    # In particular, the name of the local MSP ID of a peer needs
-    # to match the name of one of the MSPs in each of the channel
-    # that this peer is a member of. Otherwise this peer's messages
-    # will not be identified as valid by other nodes.
+    # 部署人员需要更改localMspId字符串的值。
+    # 尤其是，peer节点的本地MSP ID名称必须与该peer节点所属的每个通道中的一个MSP名称相匹配。
+    # 否则，该节点的消息将不会被其他节点识别为有效。
     localMspId: SampleOrg
 
     # CLI common client config options
@@ -395,8 +370,7 @@ peer:
     # Type for the local MSP - by default it's of type bccsp
     localMspType: bccsp
 
-    # Used with Go profiling tools only in none production environment. In
-    # production, it should be disabled (eg enabled: false)
+    # 仅在非生产环境中与Go分析工具一起使用。在生产环境中，它应该被禁用(例如enabled: false)。
     profile:
         enabled: false
         listenAddress: 0.0.0.0:6060
@@ -456,10 +430,8 @@ peer:
     # the peer so please change this value only if you know what you're doing
     validatorPoolSize:
 
-    # The discovery service is used by clients to query information about peers,
-    # such as - which peers have joined a certain channel, what is the latest
-    # channel config, and most importantly - given a chaincode and a channel,
-    # what possible sets of peers satisfy the endorsement policy.
+    # 客户端使用发现服务来查询有关对等设备的信息
+    # 例如：哪些对等设备加入了某个频道，最新的频道配置是什么，以及最重要的一点--在给定链码和频道的情况下，有哪些可能的对等设备集符合背书策略。
     discovery:
         enabled: true
         # Whether the authentication cache is enabled or not.
@@ -499,7 +471,7 @@ peer:
 #
 ###############################################################################
 vm:
-    # Endpoint of the vm management system.  For docker can be one of the following in general
+    # 虚拟机管理系统的端点。  对于docker来说，一般可以是以下其中之一
     # unix:///var/run/docker.sock
     # http://localhost:2375
     # https://localhost:2376
@@ -738,7 +710,7 @@ ledger:
 #
 ###############################################################################
 operations:
-    # host and port for the operations server
+    # 操作服务器的主机和端口
     listenAddress: 127.0.0.1:9443
 
     # TLS configuration for the operations endpoint

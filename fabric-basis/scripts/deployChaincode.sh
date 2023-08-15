@@ -7,7 +7,9 @@ export FABRIC_CFG_PATH=$PWD/../config/
 
 echo "Vendoring Go dependencies at ../chaincode"
 pushd ../chaincode || exit
-GO111MODULE=on go mod vendor
+# GO111MODULE=on
+go mod tidy
+go mod vendor
 popd || exit
 echo "Finished vendoring Go dependencies"
 
